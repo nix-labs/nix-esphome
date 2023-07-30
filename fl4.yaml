@@ -1,6 +1,6 @@
 # These substitutions allow the end user to override certain values
 substitutions:
-  name: "Fl4"
+  name: "fl4"
   friendly_name: "NIX labs FL4+"
 
 esphome:
