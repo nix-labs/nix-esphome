@@ -1,19 +1,18 @@
 # Change these values to change the device name.
 substitutions:
-  name: "fl4"
+  name: "nixlabs-fl4"
   friendly_name: "NIX labs FL4+"
 
 esphome:
   name: "${name}"
   friendly_name: "${friendly_name}"
-  name_add_mac_suffix: True
+  name_add_mac_suffix: False
+  project:
+    name: NIXlabs.FL4
+    version: "0.1"
   includes: 
     - nixlabs_commands.h
     #- nixlabs_system.h
-
-  project:
-    name: nixlabs.fl4
-    version: "0.1"
 
 esp32:
   board: esp32dev
@@ -21,14 +20,12 @@ esp32:
     type: arduino
 
 logger:
-
 api:
-
 ota:
 
 # This is the public location of this yaml file.
 dashboard_import:
-  package_import_url: github://nix-labs/nix-esphome/blob/main/fl4.yaml@main
+  package_import_url: github://nix-labs/nix-esphome/fl4.yaml@main
   import_full_config: True
 
 wifi:
