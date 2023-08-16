@@ -40,7 +40,7 @@ web_server:
   port: 80
   version: 1
   ota: false
-  css_url: "https://23.n33174.com/nixesphome.css"
+  css_url: "https://static.nixie.com.au/nixplus.css"
 
 button: 
 - platform: template
