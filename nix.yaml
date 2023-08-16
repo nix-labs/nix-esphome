@@ -1,0 +1,105 @@
+# Change these values to change the device name.
+substitutions:
+  name: "fl4"
+  friendly_name: "NIX labs FL4+"
+
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+  includes: 
+    - nixlabs_commands.h
+
+  project:
+    name: esphome.project-template
+    version: "1.0"
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+
+api:
+
+ota:
+
+# This is the public location of this yaml file.
+dashboard_import:
+  package_import_url: github://nix-labs/nix-esphome/blob/main/fl4.yaml@main
+
+wifi:
+  ap:
+    ssid: "${device_name}"
+    password: "12345678"
+
+captive_portal:
+
+web_server:
+  port: 80
+  version: 1
+  ota: false
+  css_url: "https://23.n33174.com/nixesphome.css"
+
+button: 
+- platform: template
+  name: "${friendly_name} Buzzer"
+  on_press: 
+    - lambda: |-
+        beep();
+
+light:
+- platform: custom
+  lambda: |-
+    auto light_backlight = new nix_backlight();
+    App.register_component(light_backlight);
+    return {light_backlight};
+  lights:
+    - name: "${friendly_name} Backlight"
+      default_transition_length: 0s
+      on_turn_on:
+        - lambda: |-
+            dispOn();
+      on_turn_off:
+        - lambda: |-
+            dispOff();
+
+- platform: custom
+  lambda: |-
+    auto light_display = new nix_display();
+    App.register_component(light_display);
+    return {light_display};
+  lights:
+    - name: "${friendly_name} Display"
+      default_transition_length: 0s
+
+custom_component:
+- lambda: |-
+    auto my_custom = new NIXsystem();
+    return {my_custom};
+  components:
+  - id: my_custom_id            
+
+sensor:
+  - platform: uptime
+    name: ${friendly_name} Uptime Sensor
+  - platform: custom
+    lambda: |-
+      auto sensor_nixtemp_nixlight = new NIXsensors();
+      App.register_component(sensor_nixtemp_nixlight);
+      return {sensor_nixtemp_nixlight->temperature, sensor_nixtemp_nixlight->lightLevel};
+    sensors:
+      - name: "${friendly_name} Temperature"
+        unit_of_measurement: °C
+        accuracy_decimals: 1
+      - name: "${friendly_name} Ambient Light"
+        unit_of_measurement: "%"
+        accuracy_decimals: 0
+
+##########################################################
+
+# Sets up Bluetooth LE (Only on ESP32) to allow the user
+# to provision wifi credentials to the device.
+esp32_improv:
+  authorizer: none
