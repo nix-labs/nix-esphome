@@ -10,7 +10,7 @@ void dispOff() {
   data[0] = 0x20;	    // special function command to turn display on/off, byte 0 in the manual
   data[0x10] = 2;     // off
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -25,7 +25,7 @@ void dispOn() {
   data[0] = 0x20;	    // special function command to turn display on/off, byte 0 in the manual
   data[0x10] = 3;     // off
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -40,7 +40,7 @@ void showTemperature() {
   data[0] = 0x20;	    // special function command to show alternate screen for 3s
   data[0x11] = 1;     // Temperature screen
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -55,7 +55,7 @@ void showDate() {
   data[0] = 0x20;	    // special function command to show alternate screen for 3s
   data[0x11] = 2;     // Date screen
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -70,7 +70,7 @@ void showDemo() {
   data[0] = 0x20;	    // special function command to show alternate screen
   data[0x11] = 3;     // One round of antipoisoning (like a display demo)
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -94,7 +94,7 @@ void startCounter() {
   // Bit 4 : Prefer to show time screen? Always read when a new timer is set (ie: valid Tmr0-3 value).
   //    0 = Counter is shown except for 3s every minute (time shows). Button press shows time for 3s 
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -118,7 +118,7 @@ void pauseCounterTimer() {
   // Bit 4 : Prefer to show time screen? Always read when a new timer is set (ie: valid Tmr0-3 value).
   //    0 = Counter is shown except for 3s every minute (time shows). Button press shows time for 3s 
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -142,7 +142,7 @@ void resumeCounterTimer() {
   // Bit 4 : Prefer to show time screen? Always read when a new timer is set (ie: valid Tmr0-3 value).
   //    0 = Counter is shown except for 3s every minute (time shows). Button press shows time for 3s 
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -165,7 +165,7 @@ void cancelCounterTimer() {
   // Bit 4 : Prefer to show time screen? Always read when a new timer is set (ie: valid Tmr0-3 value).
   //    0 = Counter is shown except for 3s every minute (time shows). Button press shows time for 3s 
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -197,7 +197,7 @@ void startTimer(uint32_t time_val) {
   // Bit 4 : Prefer to show time screen? Always read when a new timer is set (ie: valid Tmr0-3 value).
   //    0 = Counter is shown except for 3s every minute (time shows). Button press shows time for 3s 
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -232,7 +232,7 @@ void beep(uint16_t freq=2000, uint8_t volume=7, uint16_t duration=500) {
   data[0x08] = (freq_vol & 0x00FF);       // Frequency lower byte
   data[0x09] = duration/10;               // Accepts duration in tens of milliseconds (ie: 50 = 500ms)
 
-  send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+  send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
   return;
 }
@@ -267,7 +267,7 @@ class nix_backlight : public Component, public LightOutput {
     data[3] = red*30 +1;
     data[4] = blue*30 +1;
 
-    send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+    send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
     return;
   }
@@ -300,7 +300,7 @@ class nix_display : public Component, public LightOutput {
     data[0x13] = brightness*7;  // Accepts display brightness 0-7
     data[0x14] = 3;	            // Apply to: 1=night level, 2=day level, 3=day and night, 4=day level and calculate night based on past ratio
 
-    send_packet(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
+    send_packet_get_response(data);  // Returns 0 if success, 1 if fail. It will print the warning for us so not anything else we need to do if failed
 
     return;
   }
@@ -325,7 +325,7 @@ class NIXsensors : public PollingComponent {
     std::vector<unsigned char> response(65);
     data[0] = 0x11;	    // Request to read the measurement data
 
-    response = send_packet_get_response(data);  // Will also auto-retry, if it fails, byte0=0
+    response = send_packet_get_response_get_response(data);  // Will also auto-retry, if it fails, byte0=0
 
     if(response[0] != 0){ // Byte0=0 is set by the function and can only mean a failed transaction
 
